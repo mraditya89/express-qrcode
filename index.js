@@ -1,10 +1,12 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const qrCode = require("qrcode");
-var CryptoJS = require("crypto-js");
-const PORT = 5000;
-const HOSTNAME = "192.168.3.146";
+const jwt = require("jsonwebtoken");
+
+const PORT = process.env.PORT || 5000;
+const HOSTNAME = process.env.HOSTNAME || "localhost";
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,11 +19,12 @@ app.get("/", (req, res) => {
 app.post("/scan", async (req, res) => {
   let { body } = req;
   body["T"] = new Date().getTime();
-  const data = JSON.stringify(body);
-  const ciphertext = CryptoJS.AES.encrypt(data, "s3Cr3T").toString();
-  const qrCodeSrc = await qrCode.toDataURL(ciphertext);
 
-  res.render("scan", { qrCode: qrCodeSrc, data, ciphertext });
+  const data = JSON.stringify(body);
+  const secret = "s3Cr3T";
+  const token = jwt.sign(body, secret, { expiresIn: "12h" });
+  const qrCodeSrc = await qrCode.toDataURL(token);
+  res.render("scan", { qrCode: qrCodeSrc, data, token, secret });
 });
 
 app.listen(PORT, HOSTNAME, () => {

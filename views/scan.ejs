@@ -18,11 +18,9 @@
             <img src="<%=qrCode%>" alt="QR Code Image" class="mx-auto" />
             <p class="text-center">Scan the QR Code to access data!</p>
             <div>Raw Data :</div>
-            <div class="mt-1 bg-gray-100 p-3"><%=data%></div>
-            <div class="mt-3">Encrypted Data (Method : AES, key: s3Cr3T ):</div>
-            <div class="mt-1 bg-gray-100 p-3 overflow-x-auto">
-              <%=ciphertext%>
-            </div>
+            <div class="mt-1 bg-gray-100 p-3 overflow-x-auto"><%=data%></div>
+            <div class="mt-3">JWT with key "<%=secret%>":</div>
+            <div class="mt-1 bg-gray-100 p-3 overflow-x-auto"><%=token%></div>
             <a href="/"
               ><button
                 type="button"
