@@ -24,7 +24,9 @@ app.post("/scan", async (req, res) => {
   const data = JSON.stringify(body);
 
   const token = jwt.sign(body, secret, { expiresIn: "12h" });
-  const qrCodeSrc = await qrCode.toDataURL(token);
+  const qrCodeSrc = await qrCode.toDataURL(token, {
+    errorCorrectionLevel: "L",
+  });
   res.render("scan", { qrCode: qrCodeSrc, data, token, secret });
 });
 
