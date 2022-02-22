@@ -20,11 +20,14 @@ app.get("/", (req, res) => {
 app.post("/scan", async (req, res) => {
   let { body } = req;
   body["T"] = new Date().getTime();
+  body["Wi"] = +body["Wi"];
+  body["E"] = +body["E"];
+  body["id"] = +body["id"];
 
   const data = JSON.stringify(body);
 
   const token = jwt.sign(body, secret, { expiresIn: "12h" });
-  const qrCodeSrc = await qrCode.toDataURL(token, {
+  const qrCodeSrc = await qrCode.toDataURL(JSON.stringify(token), {
     errorCorrectionLevel: "L",
   });
   res.render("scan", { qrCode: qrCodeSrc, data, token, secret });
