@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 
 app.post("/scan", async (req, res) => {
   let { body } = req;
-  body["T"] = new Date().getTime();
+  body["T"] = Math.round(new Date().getTime() / 1000);
   body["Wi"] = +body["Wi"];
   body["E"] = +body["E"];
   body["id"] = +body["id"];
